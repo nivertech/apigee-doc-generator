@@ -1,6 +1,7 @@
 package com.isidorey.documentation;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,11 @@ import com.isidorey.models.UriParameterModel;
 
 @SuppressWarnings("unchecked")
 public class HtmlCreator {
+
+	/**
+	 * Resource url
+	 */
+	public static String RESOURCE_URL = "http://dev.isidorey.net/docs/";
 
 	/**
 	 * CSS
@@ -41,52 +47,21 @@ public class HtmlCreator {
 		jsList.add(JS_1);
 	}
 
-	public void generateHtmlFromModel(BaseApiModel baseApiModel) {
+	public void generateHtmlFromModel(BaseApiModel baseApiModel,
+			String localFilename) {
 
 		BaseApiModel api = baseApiModel;
-
-		if (Constants.DEBUG) {
-			print("BASE URL: " + api.getBaseUrl());
-			List<ApiModel> apiModelList = api.getApiGroupings();
-			for (ApiModel apiModel : apiModelList) {
-				print("===================");
-				print("API TYPE " + apiModel.getType());
-				print("API DESC: " + apiModel.getDescription());
-				List<ApiCallModel> apiCallsList = apiModel.getApiCallList();
-				for (ApiCallModel apiCall : apiCallsList) {
-					print("---------------------------");
-					print("CALL: " + apiCall.getPath() + " "
-							+ apiCall.getRequestType());
-					print("EXAMPLE URL: " + apiCall.getExampleUrl());
-					print("DESC: " + apiCall.getDescription());
-					print("");
-					List<UriParameterModel> uriParamList = apiCall
-							.getUriParameterModelList();
-					for (UriParameterModel uriParam : uriParamList) {
-						print("URI PARAM: " + uriParam.getName());
-						print("URI PARAM DESC: " + uriParam.getDescription());
-						print("IS REQUIRED: " + uriParam.isRequired());
-					}
-					print("");
-					List<HeaderParameterModel> headerParamList = apiCall
-							.getHeaderParameterModelList();
-					for (HeaderParameterModel headerParam : headerParamList) {
-						print("HEADER PARAM: " + headerParam.getName());
-						print("HEADER PARAM DESC: "
-								+ headerParam.getDescription());
-						print("IS REQUIRED: " + headerParam.isRequired());
-					}
-				}
-			}
-		}
+		if (Constants.DEBUG)
+			;
+		debug(api);
 
 		Tag html = new Tag("html");
 		Tag head = generateHead();
 		html.add(head);
 
 		Tag container = new Tag("div", "id=container");
-		Tag logo = new Tag("img",
-				"src=images/logo.gif align=left valign=bottom alt=Isidorey");
+		Tag logo = new Tag("img", "src=" + RESOURCE_URL
+				+ "images/logo.gif align=left valign=bottom alt=Isidorey");
 		container.add(logo);
 
 		Tag header = new Tag("header");
@@ -145,7 +120,7 @@ public class HtmlCreator {
 				preCall.add(codeCall);
 
 				hrTag.add(preCall);
-				
+
 				Tag pCallDescription = new Tag("p");
 				pCallDescription.add(apiCall.getDescription());
 				hrTag.add(pCallDescription);
@@ -184,20 +159,21 @@ public class HtmlCreator {
 		 * Add JS files last
 		 */
 		for (String jsFile : jsList) {
-			html.add(new Tag("script", "type=text/javascript src=" + jsFile
-					+ ""));
+			html.add(new Tag("script", "type=text/javascript src="
+					+ RESOURCE_URL + jsFile + ""));
 		}
 
 		html.add("<script type=text/javascript>highlight(undefined, undefined, 'pre');</script>");
-		generateHtml(html.toString());
+		generateHtml(html.toString(), localFilename);
 
 	}
 
-	public void generateHtml(String htmlString) {
+	public void generateHtml(String htmlString, String localFilename) {
 		try {
-			FileWriter fstream = new FileWriter(
-					"/Users/franklovecchio/Desktop/development/documentation/generated.html",
-					true);
+			File file = new File(localFilename);
+			file.delete();
+			file.createNewFile();
+			FileWriter fstream = new FileWriter(localFilename, true);
 			BufferedWriter out = new BufferedWriter(fstream);
 			out.write(htmlString);
 			out.close();
@@ -210,8 +186,8 @@ public class HtmlCreator {
 		Tag header = new Tag("head");
 		for (String cssFile : cssList) {
 			header.add(new Tag("link",
-					"rel=stylesheet type=text/css media=all href=" + cssFile
-							+ ""));
+					"rel=stylesheet type=text/css media=all href="
+							+ RESOURCE_URL + cssFile + ""));
 		}
 		Tag title = new Tag("title");
 		title.add("Isidorey API Generated Documentation");
@@ -321,14 +297,40 @@ public class HtmlCreator {
 		return table;
 	}
 
-	public void writeToLog(String text) {
-		try {
-			FileWriter fstream = new FileWriter(Constants.LOCAL_JS_FILE);
-			BufferedWriter out = new BufferedWriter(fstream);
-			out.write(text);
-			out.close();
-		} catch (Exception e) {
-			System.err.println("Error: " + e.getMessage());
+	public void debug(BaseApiModel api) {
+		if (Constants.DEBUG) {
+			print("BASE URL: " + api.getBaseUrl());
+			List<ApiModel> apiModelList = api.getApiGroupings();
+			for (ApiModel apiModel : apiModelList) {
+				print("===================");
+				print("API TYPE " + apiModel.getType());
+				print("API DESC: " + apiModel.getDescription());
+				List<ApiCallModel> apiCallsList = apiModel.getApiCallList();
+				for (ApiCallModel apiCall : apiCallsList) {
+					print("---------------------------");
+					print("CALL: " + apiCall.getPath() + " "
+							+ apiCall.getRequestType());
+					print("EXAMPLE URL: " + apiCall.getExampleUrl());
+					print("DESC: " + apiCall.getDescription());
+					print("");
+					List<UriParameterModel> uriParamList = apiCall
+							.getUriParameterModelList();
+					for (UriParameterModel uriParam : uriParamList) {
+						print("URI PARAM: " + uriParam.getName());
+						print("URI PARAM DESC: " + uriParam.getDescription());
+						print("IS REQUIRED: " + uriParam.isRequired());
+					}
+					print("");
+					List<HeaderParameterModel> headerParamList = apiCall
+							.getHeaderParameterModelList();
+					for (HeaderParameterModel headerParam : headerParamList) {
+						print("HEADER PARAM: " + headerParam.getName());
+						print("HEADER PARAM DESC: "
+								+ headerParam.getDescription());
+						print("IS REQUIRED: " + headerParam.isRequired());
+					}
+				}
+			}
 		}
 	}
 

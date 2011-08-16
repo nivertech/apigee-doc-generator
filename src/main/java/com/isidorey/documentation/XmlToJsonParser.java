@@ -1,5 +1,7 @@
 package com.isidorey.documentation;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -28,24 +30,17 @@ import com.isidorey.models.UriParameterModel;
  */
 public class XmlToJsonParser {
 
-	public static void main(String argv[]) throws IOException {
-		generateWebpage();
-		// generateApigeeWadl();
-	}
-
-	/**
-	 * We're essentially removing custom tags and saving a file
-	 */
-	public void genereateApigeeWadl() {
-
-	}
-
 	/**
 	 * We're using custom tags and css and saving file locally
 	 */
-	public static void generateWebpage() {
-		InputStream is = XmlToJsonParser.class
-				.getResourceAsStream(Constants.MODIFIED_WADL_FILE);
+	public void generateWebpage(String wadlFile, String localFilename) {
+
+		InputStream is = null;
+		try {
+			is = new FileInputStream(wadlFile);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
 
 		String xml = null;
 		try {
@@ -62,9 +57,6 @@ public class XmlToJsonParser {
 		XMLSerializer xmlSerializer = new XMLSerializer();
 		JSON json = xmlSerializer.read(xml);
 
-		String jsonPrint = json.toString(2);
-		htmlCreator.writeToLog(jsonPrint);
-
 		/**
 		 * Parse
 		 */
@@ -74,8 +66,7 @@ public class XmlToJsonParser {
 		/**
 		 * Parse into html
 		 */
-		htmlCreator.generateHtmlFromModel(baseApiModel);
-		System.exit(1);
+		htmlCreator.generateHtmlFromModel(baseApiModel, localFilename);
 	}
 
 	/**
@@ -83,7 +74,7 @@ public class XmlToJsonParser {
 	 * 
 	 * @param jsonObject
 	 */
-	public static BaseApiModel parse(JSONObject jsonObject) {
+	public BaseApiModel parse(JSONObject jsonObject) {
 
 		BaseApiModel baseApiModel = new BaseApiModel();
 
@@ -281,7 +272,7 @@ public class XmlToJsonParser {
 
 	}
 
-	public static void print(String line) {
+	public void print(String line) {
 		System.out.println(line);
 	}
 }
