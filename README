@@ -1,0 +1,7 @@
+apigee-doc-generator
+=====
+
+Usage
+-----------------------------------
+
+The core library will take an XML .wadl file, which APIGEE uses, and parse it into a usable model.  From the model, we parse it into HTML on the fly using an API call /documentation.  An example test, along with a demo Play application, is included.
