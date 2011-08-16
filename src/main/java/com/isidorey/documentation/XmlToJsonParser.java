@@ -19,6 +19,13 @@ import com.isidorey.models.BaseApiModel;
 import com.isidorey.models.HeaderParameterModel;
 import com.isidorey.models.UriParameterModel;
 
+/**
+ * Parses a wadl xml file with custom tags into models. We can also remove the
+ * custom tags to use in APIGEE, etc.
+ * 
+ * @author franklovecchio
+ * 
+ */
 public class XmlToJsonParser {
 
 	public static void main(String argv[]) throws IOException {

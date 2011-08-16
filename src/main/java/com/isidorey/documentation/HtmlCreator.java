@@ -111,6 +111,10 @@ public class HtmlCreator {
 
 		container.add(preBaseUrl);
 
+		Tag spacer = new Tag("br");
+		container.add(spacer);
+		container.add(generateMenu(baseApiModel));
+
 		List<ApiModel> apiModelList = api.getApiGroupings();
 		for (ApiModel apiModel : apiModelList) {
 
@@ -128,7 +132,8 @@ public class HtmlCreator {
 			List<ApiCallModel> apiCallsList = apiModel.getApiCallList();
 			for (ApiCallModel apiCall : apiCallsList) {
 
-				Tag h4Call = new Tag("h5");
+				Tag h4Call = new Tag("h5", "id=" + apiCall.getPath()
+						+ apiCall.getRequestType());
 				h4Call.add(apiCall.getPath() + " [" + apiCall.getRequestType()
 						+ "]");
 
@@ -140,6 +145,10 @@ public class HtmlCreator {
 				preCall.add(codeCall);
 
 				hrTag.add(preCall);
+				
+				Tag pCallDescription = new Tag("p");
+				pCallDescription.add(apiCall.getDescription());
+				hrTag.add(pCallDescription);
 
 				/**
 				 * Generate URI parameter table
@@ -150,6 +159,9 @@ public class HtmlCreator {
 					Tag uriParamTable = uriParamTableCreator(uriParamList);
 					hrTag.add(uriParamTable);
 				}
+
+				Tag breakTag = new Tag("br");
+				hrTag.add(breakTag);
 
 				/**
 				 * Genreate header parameter table
@@ -207,23 +219,42 @@ public class HtmlCreator {
 		return header;
 	}
 
+	public Tag generateMenu(BaseApiModel api) {
+		Tag ul = new Tag("ul");
+		List<ApiModel> apiModelList = api.getApiGroupings();
+		for (ApiModel apiModel : apiModelList) {
+			List<ApiCallModel> apiCallsList = apiModel.getApiCallList();
+			for (ApiCallModel apiCall : apiCallsList) {
+				Tag li = new Tag("li");
+				Tag link = new Tag("a", "href=#" + apiCall.getPath()
+						+ apiCall.getRequestType());
+				link.add(apiCall.getPath() + " (" + apiCall.getRequestType()
+						+ ")");
+				li.add(link);
+				ul.add(li);
+			}
+
+		}
+		return ul;
+	}
+
 	public Tag uriParamTableCreator(List<UriParameterModel> uriParamList) {
 
 		Tag table = new Tag("table",
 				"cellspacing=0 summary=URL Params width=750px");
 
 		Tag tableRowHeader = new Tag("tr");
-		Tag tableHeader = new Tag("th", "scope=col abbr=URLParams class=nobg");
 
-		Tag tableRow1 = new Tag("tr", "scope=col abbr=URLParams class=nobg");
-		Tag tableRow2 = new Tag("tr", "scope=col abbr=Description");
-		Tag tableRow3 = new Tag("tr", "scope=col abbr=Required");
+		Tag tableRow1 = new Tag("th", "scope=col abbr=URLParams class=nobg");
+		tableRow1.add("URI Params");
+		Tag tableRow2 = new Tag("th", "scope=col abbr=Description");
+		tableRow2.add("Description");
+		Tag tableRow3 = new Tag("th", "scope=col abbr=Required");
+		tableRow3.add("Required");
 
-		tableHeader.add(tableRow1);
-		tableHeader.add(tableRow2);
-		tableHeader.add(tableRow3);
-
-		tableRowHeader.add(tableHeader);
+		tableRowHeader.add(tableRow1);
+		tableRowHeader.add(tableRow2);
+		tableRowHeader.add(tableRow3);
 
 		table.add(tableRowHeader);
 
@@ -255,17 +286,17 @@ public class HtmlCreator {
 				"cellspacing=0 summary=URL Params width=750px");
 
 		Tag tableRowHeader = new Tag("tr");
-		Tag tableHeader = new Tag("th", "scope=col abbr=URLParams class=nobg");
 
-		Tag tableRow1 = new Tag("tr", "scope=col abbr=URLParams class=nobg");
-		Tag tableRow2 = new Tag("tr", "scope=col abbr=Description");
-		Tag tableRow3 = new Tag("tr", "scope=col abbr=Required");
+		Tag tableRow1 = new Tag("th", "scope=col abbr=HeaderParams class=nobg");
+		tableRow1.add("Header Params");
+		Tag tableRow2 = new Tag("th", "scope=col abbr=Description");
+		tableRow2.add("Description");
+		Tag tableRow3 = new Tag("th", "scope=col abbr=Required");
+		tableRow3.add("Required");
 
-		tableHeader.add(tableRow1);
-		tableHeader.add(tableRow2);
-		tableHeader.add(tableRow3);
-
-		tableRowHeader.add(tableHeader);
+		tableRowHeader.add(tableRow1);
+		tableRowHeader.add(tableRow2);
+		tableRowHeader.add(tableRow3);
 
 		table.add(tableRowHeader);
 
