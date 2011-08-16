@@ -2,6 +2,7 @@ package com.isidorey.documentation;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.html.generator.Tag;
@@ -13,6 +14,32 @@ import com.isidorey.models.UriParameterModel;
 
 @SuppressWarnings("unchecked")
 public class HtmlCreator {
+
+	/**
+	 * CSS
+	 */
+	public static String CSS_1 = "css/style.css";
+	public static String CSS_2 = "css/sh.css";
+	public static String CSS_3 = "css/tables.css";
+
+	public static List<String> cssList;
+	static {
+		cssList = new ArrayList<String>();
+		cssList.add(CSS_1);
+		cssList.add(CSS_2);
+		cssList.add(CSS_3);
+	}
+
+	/**
+	 * JS
+	 */
+	public static String JS_1 = "js/sh-main.js";
+
+	public static List<String> jsList;
+	static {
+		jsList = new ArrayList<String>();
+		jsList.add(JS_1);
+	}
 
 	public void generateHtmlFromModel(BaseApiModel baseApiModel) {
 
@@ -53,22 +80,36 @@ public class HtmlCreator {
 			}
 		}
 
-		Tag html = generateHead();
+		Tag html = new Tag("html");
+		Tag head = generateHead();
+		html.add(head);
+
+		Tag container = new Tag("div", "id=container");
+		Tag logo = new Tag("img",
+				"src=images/logo.gif align=left valign=bottom alt=Isidorey");
+		container.add(logo);
+
+		Tag header = new Tag("header");
+		Tag h1Text = new Tag("h1");
+		h1Text.add("Isidorey.API Generated Documentation");
+
+		header.add(h1Text);
+		container.add(header);
 
 		/**
-		 * Heading
+		 * Headings
 		 */
 		Tag h2Overview = new Tag("h2");
 		h2Overview.add("Overview");
 
-		html.add(h2Overview);
+		container.add(h2Overview);
 
 		Tag preBaseUrl = new Tag("pre");
 		Tag codeBaseUrl = new Tag("code");
 		codeBaseUrl.add(api.getBaseUrl());
 		preBaseUrl.add(codeBaseUrl);
 
-		html.add(preBaseUrl);
+		container.add(preBaseUrl);
 
 		List<ApiModel> apiModelList = api.getApiGroupings();
 		for (ApiModel apiModel : apiModelList) {
@@ -87,9 +128,9 @@ public class HtmlCreator {
 			List<ApiCallModel> apiCallsList = apiModel.getApiCallList();
 			for (ApiCallModel apiCall : apiCallsList) {
 
-				Tag h4Call = new Tag("h2");
-				h4Call.add(apiCall.getPath() + "(" + apiCall.getRequestType()
-						+ ")");
+				Tag h4Call = new Tag("h5");
+				h4Call.add(apiCall.getPath() + " [" + apiCall.getRequestType()
+						+ "]");
 
 				hrTag.add(h4Call);
 
@@ -105,24 +146,37 @@ public class HtmlCreator {
 				 */
 				List<UriParameterModel> uriParamList = apiCall
 						.getUriParameterModelList();
-				Tag uriParamTable = uriParamTableCreator(uriParamList);
-
-				hrTag.add(uriParamTable);
+				if (!uriParamList.isEmpty()) {
+					Tag uriParamTable = uriParamTableCreator(uriParamList);
+					hrTag.add(uriParamTable);
+				}
 
 				/**
 				 * Genreate header parameter table
 				 */
 				List<HeaderParameterModel> headerParamList = apiCall
 						.getHeaderParameterModelList();
-				Tag headerParamTable = headerParamTableCreator(headerParamList);
-
-				hrTag.add(headerParamTable);
+				if (!headerParamList.isEmpty()) {
+					Tag headerParamTable = headerParamTableCreator(headerParamList);
+					hrTag.add(headerParamTable);
+				}
 
 			}
 
-			html.add(hrTag);
+			container.add(hrTag);
 		}
 
+		html.add(container);
+
+		/**
+		 * Add JS files last
+		 */
+		for (String jsFile : jsList) {
+			html.add(new Tag("script", "type=text/javascript src=" + jsFile
+					+ ""));
+		}
+
+		html.add("<script type=text/javascript>highlight(undefined, undefined, 'pre');</script>");
 		generateHtml(html.toString());
 
 	}
@@ -141,16 +195,16 @@ public class HtmlCreator {
 	}
 
 	public Tag generateHead() {
-		Tag html = new Tag("html");
-		Tag head = new Tag("head");
-		for (String cssFile : Constants.cssList) {
-			head.add(new Tag("link", "rel=stylesheet type=text/css href=."
-					+ cssFile + ""));
+		Tag header = new Tag("head");
+		for (String cssFile : cssList) {
+			header.add(new Tag("link",
+					"rel=stylesheet type=text/css media=all href=" + cssFile
+							+ ""));
 		}
 		Tag title = new Tag("title");
 		title.add("Isidorey API Generated Documentation");
-		head.add(title);
-		return html;
+		header.add(title);
+		return header;
 	}
 
 	public Tag uriParamTableCreator(List<UriParameterModel> uriParamList) {
@@ -175,7 +229,8 @@ public class HtmlCreator {
 
 		for (UriParameterModel uriParam : uriParamList) {
 			Tag tableRow = new Tag("tr");
-			Tag tableBodyHeader = new Tag("th", "scope=row abbr=abbr class=spec");
+			Tag tableBodyHeader = new Tag("th",
+					"scope=row abbr=abbr class=spec");
 			tableBodyHeader.add(uriParam.getName());
 
 			Tag cellDescription = new Tag("td");

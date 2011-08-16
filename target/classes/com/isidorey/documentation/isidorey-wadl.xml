@@ -494,7 +494,7 @@
             <apigee:tag primary="true">RULESENGINE API</apigee:tag>
           </apigee:tags>
           <apigee:authentication required="true"/>
-          <apigee:example url="/v0.9/RULESENGINE/target/"/>
+          <apigee:example url="https://api.isidorey.net/v0.9/RULESENGINE/target/"/>
           <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/target/">Create a target. Every rule needs a target. A target can be a part ofmultiple rules. A target only requires one notifcation parameter to be specified.</doc>
           <request>
             <param name="email" type="text" style="query" required="false" default=""/>
@@ -534,7 +534,7 @@
           <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/target">Get all targets.</doc>
         </method>
       </resource>
-      <resource path="v/RULESENGINE/target">
+      <resource path="/RULESENGINE/target">
         <method id="TARGET_DELETE" name="DELETE" apigee:displayName="target (DELETE)">
           <apigee:tags>
             <apigee:tag primary="true">RULESENGINE API</apigee:tag>
@@ -703,7 +703,7 @@
             <apigee:tag primary="true">RULESENGINE API</apigee:tag>
           </apigee:tags>
           <apigee:authentication required="true"/>
-          <apigee:example url="/v0.9/RULESENGINE/ruleMapping?ruleId={ruleId}"/>
+          <apigee:example url="https://api.isidorey.net/v0.9/RULESENGINE/ruleMapping?ruleId={ruleId}"/>
           <description uriparam="ruleId" text="The rule mapping(s) to display based on rule ID"/>
           <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/ruleMapping">Get a rule mapping by rule ID.</doc>
         </method>

@@ -23,7 +23,7 @@ public class XmlToJsonParser {
 
 	public static void main(String argv[]) throws IOException {
 		generateWebpage();
-		//generateApigeeWadl();
+		// generateApigeeWadl();
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class XmlToJsonParser {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		HtmlCreator htmlCreator = new HtmlCreator();
 
 		/**
@@ -54,16 +54,16 @@ public class XmlToJsonParser {
 		 */
 		XMLSerializer xmlSerializer = new XMLSerializer();
 		JSON json = xmlSerializer.read(xml);
-		
+
 		String jsonPrint = json.toString(2);
 		htmlCreator.writeToLog(jsonPrint);
 
 		/**
-		 * Parse 
+		 * Parse
 		 */
 		JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(json);
 		BaseApiModel baseApiModel = parse(jsonObject);
-		
+
 		/**
 		 * Parse into html
 		 */
@@ -105,7 +105,7 @@ public class XmlToJsonParser {
 			apiModel.setDescription(apiDescription);
 
 			List<ApiCallModel> apiCallModelList = new ArrayList<ApiCallModel>();
-			
+
 			JSONArray resourcesArray = apiObject.getJSONArray("resource");
 			for (int j = 0; j < resourcesArray.size(); j++) {
 
@@ -127,7 +127,20 @@ public class XmlToJsonParser {
 				 * Example URL and request type
 				 */
 				String url = exampleUrl.getString("@url");
-				String requestType = methodObject.getString("@name");
+
+				/**
+				 * Check for (GET ALL)
+				 */
+				String requestType = null;
+				String displayName = methodObject
+						.getString("@apigee:displayName");
+
+				if (displayName != null && displayName.contains("ALL")) {
+					requestType = methodObject.getString("@apigee:displayName");
+				} else {
+					requestType = methodObject.getString("@name");
+				}
+
 				apiCallModel.setExampleUrl(url);
 				apiCallModel.setRequestType(requestType);
 
@@ -149,16 +162,18 @@ public class XmlToJsonParser {
 					 */
 					JSONArray urlParametersArray = methodObject
 							.getJSONArray("description");
-					
+
 					for (int k = 0; k < urlParametersArray.size(); k++) {
-			
-						JSONObject urlParameters = urlParametersArray.getJSONObject(k);
-						
+
+						JSONObject urlParameters = urlParametersArray
+								.getJSONObject(k);
+
 						/**
 						 * URL param name and description
 						 */
 						String paramName = urlParameters.getString("@uriparam");
-						String paramDescription = urlParameters.getString("@text");
+						String paramDescription = urlParameters
+								.getString("@text");
 
 						boolean isRequired = true;
 						try {
@@ -186,7 +201,7 @@ public class XmlToJsonParser {
 					 * No uri params
 					 */
 				}
-				
+
 				apiCallModel.setUriParameterModelList(uriParamModelList);
 
 				/**
@@ -245,10 +260,10 @@ public class XmlToJsonParser {
 				}
 
 				apiCallModel.setHeaderParameterModelList(headerParamModelList);
-				apiCallModelList.add(apiCallModel);	
+				apiCallModelList.add(apiCallModel);
 
 			}
-		
+
 			apiModel.setApiCallList(apiCallModelList);
 			apiModelList.add(apiModel);
 
