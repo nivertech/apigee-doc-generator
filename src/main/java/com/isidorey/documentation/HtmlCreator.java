@@ -4,8 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import com.html.generator.Tag;
@@ -45,7 +45,7 @@ public class HtmlCreator {
 	}
 
 	public void generateBootstrapTemplate(
-			LinkedHashMap<String, Integer> apiMap, BaseApiModel baseApiModel,
+			Map<String, Integer> apiMap, BaseApiModel baseApiModel,
 			String localFilename, String imgLink) {
 
 		BaseApiModel api = baseApiModel;

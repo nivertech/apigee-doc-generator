@@ -1,6 +1,10 @@
 apigee-doc-generator
 =====
 
+Example
+-----------------------------------
+http://ec2-67-202-48-67.compute-1.amazonaws.com:9000/DOCUMENTATION
+
 Usage
 -----------------------------------
 

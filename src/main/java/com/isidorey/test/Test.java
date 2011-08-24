@@ -1,6 +1,7 @@
 package com.isidorey.test;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.isidorey.documentation.XmlToJsonParser;
 
@@ -24,7 +25,7 @@ public class Test {
 		int rulesengineApiCount = 49;
 		int cloudsandraApiCount = 63;
 
-		LinkedHashMap<String, Integer> apiMap = new LinkedHashMap<String, Integer>();
+		Map<String, Integer> apiMap = new LinkedHashMap<String, Integer>();
 
 		apiMap.put("NON-AUTH", nonAuthCount);
 		apiMap.put("CORE", coreApiCount);

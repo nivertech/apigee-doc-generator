@@ -12,8 +12,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
@@ -38,7 +38,7 @@ import com.isidorey.models.UriParameterModel;
  */
 public class XmlToJsonParser {
 
-	public void generateWebpage(String wadlFile, String generatedDoc, LinkedHashMap<String, Integer> apiMap, String imgLink) {
+	public void generateWebpage(String wadlFile, String generatedDoc, Map<String, Integer> apiMap, String imgLink) {
 
 		InputStream is = null;
 		try {
