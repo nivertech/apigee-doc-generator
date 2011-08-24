@@ -17,113 +17,137 @@ import com.isidorey.models.UriParameterModel;
 public class HtmlCreator {
 
 	/**
-	 * Resource url
-	 */
-	public static String RESOURCE_URL = "http://dev.isidorey.net/docs/";
-
-	/**
 	 * CSS
 	 */
-	public static String CSS_1 = "css/style.css";
-	public static String CSS_2 = "css/sh.css";
-	public static String CSS_3 = "css/tables.css";
+	public static String CSS_1 = "http://twitter.github.com/bootstrap/assets/css/bootstrap-1.0.0.min.css";
 
 	public static List<String> cssList;
 	static {
 		cssList = new ArrayList<String>();
 		cssList.add(CSS_1);
-		cssList.add(CSS_2);
-		cssList.add(CSS_3);
 	}
 
 	/**
 	 * JS
 	 */
-	public static String JS_1 = "js/sh-main.js";
+	public static String JS_1 = "http://code.jquery.com/jquery-1.5.2.min.js";
+	public static String JS_2 = "http://autobahn.tablesorter.com/jquery.tablesorter.min.js";
+	public static String JS_3 = "http://dev.isidorey.net/docs/js/apigee.js";
 
 	public static List<String> jsList;
 	static {
 		jsList = new ArrayList<String>();
 		jsList.add(JS_1);
+		jsList.add(JS_2);
+		jsList.add(JS_3);
 	}
 
-	public void generateHtmlFromModel(BaseApiModel baseApiModel,
+	public void generateBootstrapTemplate(BaseApiModel baseApiModel,
 			String localFilename) {
 
 		BaseApiModel api = baseApiModel;
 		if (Constants.DEBUG)
-			;
-		debug(api);
+			debug(api);
 
 		Tag html = new Tag("html");
 		Tag head = generateHead();
 		html.add(head);
 
-		Tag container = new Tag("div", "id=container");
-		Tag logo = new Tag("img", "src=" + RESOURCE_URL
-				+ "images/logo.gif align=left valign=bottom alt=Isidorey");
-		container.add(logo);
+		Tag body = new Tag("body");
 
-		Tag header = new Tag("header");
-		Tag h1Text = new Tag("h1");
-		h1Text.add("Isidorey.API Generated Documentation");
+		Tag divTopbar = new Tag("div", "class=topbar");
+		Tag divFill = new Tag("div", "class=fill");
+		Tag divContainer = new Tag("div", "class=container");
 
-		header.add(h1Text);
-		container.add(header);
+		Tag h3 = new Tag("h3");
+		Tag a = new Tag("a", "href=#");
+		a.add("API.doc");
+		h3.add(a);
 
-		/**
-		 * Headings
-		 */
-		Tag h2Overview = new Tag("h2");
-		h2Overview.add("Overview");
+		Tag ul = new Tag("ul", "class=\"nav secondary-nav\"");
+		Tag li = new Tag("li", "id=secondary-nav-menu class=menu");
+		Tag link = new Tag("a", "href=# onClick=showHideMenu() class=menu");
 
-		container.add(h2Overview);
-
-		Tag preBaseUrl = new Tag("pre");
-		Tag codeBaseUrl = new Tag("code");
-		codeBaseUrl.add(api.getBaseUrl());
-		preBaseUrl.add(codeBaseUrl);
-
-		container.add(preBaseUrl);
-
-		Tag spacer = new Tag("br");
-		container.add(spacer);
-		container.add(generateMenu(baseApiModel));
-
+		li.add(link);
+		
 		List<ApiModel> apiModelList = api.getApiGroupings();
+
+		Tag innerUl = new Tag("ul", "class=menu-dropdown");
 		for (ApiModel apiModel : apiModelList) {
+			List<ApiCallModel> apiCallsList = apiModel.getApiCallList();
+			for (ApiCallModel apiCall : apiCallsList) {
+				Tag innerLi = new Tag("li");
+				Tag innerLink = new Tag("a", "href=#" + apiCall.getPath().replace("/", "") + "_"
+						+ apiCall.getRequestType());
+				innerLink.add(apiCall.getPath() + " ("
+						+ apiCall.getRequestType() + ")");
+				innerLi.add(innerLink);
+				innerUl.add(innerLi);
+			}
+		}
 
-			Tag hrTag = new Tag("hr");
+		li.add(innerUl);
+		ul.add(li);
 
-			Tag h2ApiType = new Tag("h2");
-			h2ApiType.add(apiModel.getType());
+		divContainer.add(h3);
+		divContainer.add(ul);
+		divFill.add(divContainer);
+		divTopbar.add(divFill);
+		body.add(divTopbar);
 
-			Tag pApiDescription = new Tag("p");
-			pApiDescription.add(apiModel.getDescription());
+		Tag divContainerFluid = new Tag("div", "class=container-fluid");
+		Tag divContent = new Tag("div", "class=content id=main-content");
 
-			hrTag.add(h2ApiType);
-			hrTag.add(pApiDescription);
+		Tag divBreak = new Tag("div", "style=height:100px");
+		divContent.add(divBreak);
 
+		Tag img = new Tag(
+				"img",
+				"src=http://dev.isidorey.net/docs/images/logo.gif align=left valign=bottom alt=Isidorey");
+		divContent.add(img);
+
+		for (ApiModel apiModel : apiModelList) {
 			List<ApiCallModel> apiCallsList = apiModel.getApiCallList();
 			for (ApiCallModel apiCall : apiCallsList) {
 
-				Tag h4Call = new Tag("h5", "id=" + apiCall.getPath()
+				Tag div = new Tag("div", "id="
+						+ apiCall.getPath().replace("/", "") + "_"
 						+ apiCall.getRequestType());
-				h4Call.add(apiCall.getPath() + " [" + apiCall.getRequestType()
-						+ "]");
 
-				hrTag.add(h4Call);
+				Tag spacer = new Tag("div", "style=height:100px");
+				div.add(spacer);
 
-				Tag preCall = new Tag("pre");
-				Tag codeCall = new Tag("code");
-				codeCall.add(apiCall.getExampleUrl());
-				preCall.add(codeCall);
+				Tag divPageHeader = new Tag("div", "class=page-header");
 
-				hrTag.add(preCall);
+				Tag h1 = new Tag("h1");
+				h1.add(apiCall.getPath());
 
-				Tag pCallDescription = new Tag("p");
-				pCallDescription.add(apiCall.getDescription());
-				hrTag.add(pCallDescription);
+				Tag small = new Tag("small");
+				small.add(apiCall.getRequestType());
+
+				h1.add(small);
+				divPageHeader.add(h1);
+				div.add(divPageHeader);
+
+				Tag divDescription = new Tag("div",
+						"class=\"alert-message block-message success\"");
+
+				Tag p = new Tag("p");
+
+				Tag strong = new Tag("strong");
+				strong.add("Description");
+
+				p.add(strong);
+				p.add(apiCall.getDescription());
+
+				divDescription.add(p);
+				div.add(divDescription);
+
+				Tag h3UrlParams = new Tag("h3");
+				h3UrlParams.add("URL Parameters");
+
+				Tag h3HeaderParams = new Tag("h3");
+				h3HeaderParams.add("Header Parameters");
 
 				/**
 				 * Generate URI parameter table
@@ -131,50 +155,49 @@ public class HtmlCreator {
 				List<UriParameterModel> uriParamList = apiCall
 						.getUriParameterModelList();
 				if (!uriParamList.isEmpty()) {
-					Tag uriParamTable = uriParamTableCreator(uriParamList);
-					hrTag.add(uriParamTable);
+					Tag uriParamTable = genereateUrlParamTable(uriParamList);
+					div.add(h3UrlParams);
+					div.add(uriParamTable);
 				}
 
-				Tag breakTag = new Tag("br");
-				hrTag.add(breakTag);
-
 				/**
-				 * Genreate header parameter table
+				 * Generate header parameter table
 				 */
 				List<HeaderParameterModel> headerParamList = apiCall
 						.getHeaderParameterModelList();
 				if (!headerParamList.isEmpty()) {
-					Tag headerParamTable = headerParamTableCreator(headerParamList);
-					hrTag.add(headerParamTable);
+					Tag headerParamTable = genereateHeaderParamTable(headerParamList);
+					div.add(h3HeaderParams);
+					div.add(headerParamTable);
 				}
 
+				Tag lineBreak = new Tag("br");
+				div.add(lineBreak);
+
+				div.add(generateBlockquote(apiCall.getExampleUrl()));
+				divContent.add(div);
 			}
-
-			container.add(hrTag);
 		}
 
-		html.add(container);
+		divContainerFluid.add(divContent);
+		body.add(divContainerFluid);
+		html.add(body);
 
-		/**
-		 * Add JS files last
-		 */
-		for (String jsFile : jsList) {
-			html.add(new Tag("script", "type=text/javascript src="
-					+ RESOURCE_URL + jsFile + ""));
-		}
-
-		html.add("<script type=text/javascript>highlight(undefined, undefined, 'pre');</script>");
 		generateHtml(html.toString(), localFilename);
 
 	}
 
 	public void generateHtml(String htmlString, String localFilename) {
+		/**
+		 * Delete file if it exists
+		 */
 		try {
 			File file = new File(localFilename);
 			file.delete();
 			file.createNewFile();
 			FileWriter fstream = new FileWriter(localFilename, true);
 			BufferedWriter out = new BufferedWriter(fstream);
+			out.write("<!DOCTYPE html>");
 			out.write(htmlString);
 			out.close();
 		} catch (Exception e) {
@@ -185,9 +208,12 @@ public class HtmlCreator {
 	public Tag generateHead() {
 		Tag header = new Tag("head");
 		for (String cssFile : cssList) {
-			header.add(new Tag("link",
-					"rel=stylesheet type=text/css media=all href="
-							+ RESOURCE_URL + cssFile + ""));
+			header.add(new Tag("link", "rel=stylesheet type=text/css href="
+					+ cssFile + ""));
+		}
+		for (String jsFile : jsList) {
+			header.add(new Tag("script", "type=text/javascript src=" + jsFile
+					+ ""));
 		}
 		Tag title = new Tag("title");
 		title.add("Isidorey API Generated Documentation");
@@ -195,37 +221,16 @@ public class HtmlCreator {
 		return header;
 	}
 
-	public Tag generateMenu(BaseApiModel api) {
-		Tag ul = new Tag("ul");
-		List<ApiModel> apiModelList = api.getApiGroupings();
-		for (ApiModel apiModel : apiModelList) {
-			List<ApiCallModel> apiCallsList = apiModel.getApiCallList();
-			for (ApiCallModel apiCall : apiCallsList) {
-				Tag li = new Tag("li");
-				Tag link = new Tag("a", "href=#" + apiCall.getPath()
-						+ apiCall.getRequestType());
-				link.add(apiCall.getPath() + " (" + apiCall.getRequestType()
-						+ ")");
-				li.add(link);
-				ul.add(li);
-			}
-
-		}
-		return ul;
-	}
-
-	public Tag uriParamTableCreator(List<UriParameterModel> uriParamList) {
-
-		Tag table = new Tag("table",
-				"cellspacing=0 summary=URL Params width=750px");
+	public Tag genereateUrlParamTable(List<UriParameterModel> uriParamList) {
+		Tag table = new Tag("table", "class=\"common-table zebra-striped\"");
 
 		Tag tableRowHeader = new Tag("tr");
 
-		Tag tableRow1 = new Tag("th", "scope=col abbr=URLParams class=nobg");
-		tableRow1.add("URI Params");
-		Tag tableRow2 = new Tag("th", "scope=col abbr=Description");
+		Tag tableRow1 = new Tag("th", "width=10%");
+		tableRow1.add("Parameter");
+		Tag tableRow2 = new Tag("th", "width=80%");
 		tableRow2.add("Description");
-		Tag tableRow3 = new Tag("th", "scope=col abbr=Required");
+		Tag tableRow3 = new Tag("th", "width=10%");
 		tableRow3.add("Required");
 
 		tableRowHeader.add(tableRow1);
@@ -236,8 +241,8 @@ public class HtmlCreator {
 
 		for (UriParameterModel uriParam : uriParamList) {
 			Tag tableRow = new Tag("tr");
-			Tag tableBodyHeader = new Tag("th",
-					"scope=row abbr=abbr class=spec");
+
+			Tag tableBodyHeader = new Tag("td");
 			tableBodyHeader.add(uriParam.getName());
 
 			Tag cellDescription = new Tag("td");
@@ -249,25 +254,24 @@ public class HtmlCreator {
 			tableRow.add(tableBodyHeader);
 			tableRow.add(cellDescription);
 			tableRow.add(cellRequired);
+
 			table.add(tableRow);
 		}
 
 		return table;
 	}
 
-	public Tag headerParamTableCreator(
+	public Tag genereateHeaderParamTable(
 			List<HeaderParameterModel> headerParamList) {
-
-		Tag table = new Tag("table",
-				"cellspacing=0 summary=URL Params width=750px");
+		Tag table = new Tag("table", "class=\"common-table zebra-striped\"");
 
 		Tag tableRowHeader = new Tag("tr");
 
-		Tag tableRow1 = new Tag("th", "scope=col abbr=HeaderParams class=nobg");
-		tableRow1.add("Header Params");
-		Tag tableRow2 = new Tag("th", "scope=col abbr=Description");
+		Tag tableRow1 = new Tag("th", "width=10%");
+		tableRow1.add("Parameter");
+		Tag tableRow2 = new Tag("th", "width=80%");
 		tableRow2.add("Description");
-		Tag tableRow3 = new Tag("th", "scope=col abbr=Required");
+		Tag tableRow3 = new Tag("th", "width=10%");
 		tableRow3.add("Required");
 
 		tableRowHeader.add(tableRow1);
@@ -278,8 +282,8 @@ public class HtmlCreator {
 
 		for (HeaderParameterModel headerParam : headerParamList) {
 			Tag tableRow = new Tag("tr");
-			Tag tableBodyHeader = new Tag("th",
-					"scope=row abbr=abbr class=spec");
+
+			Tag tableBodyHeader = new Tag("td");
 			tableBodyHeader.add(headerParam.getName());
 
 			Tag cellDescription = new Tag("td");
@@ -291,10 +295,21 @@ public class HtmlCreator {
 			tableRow.add(tableBodyHeader);
 			tableRow.add(cellDescription);
 			tableRow.add(cellRequired);
+
 			table.add(tableRow);
 		}
 
 		return table;
+	}
+
+	public Tag generateBlockquote(String exampleUrl) {
+		Tag blockquote = new Tag("blockquote");
+		Tag p = new Tag("p");
+		Tag strong = new Tag("strong");
+		strong.add(exampleUrl);
+		p.add(strong);
+		blockquote.add(p);
+		return blockquote;
 	}
 
 	public void debug(BaseApiModel api) {
@@ -302,9 +317,6 @@ public class HtmlCreator {
 			print("BASE URL: " + api.getBaseUrl());
 			List<ApiModel> apiModelList = api.getApiGroupings();
 			for (ApiModel apiModel : apiModelList) {
-				print("===================");
-				print("API TYPE " + apiModel.getType());
-				print("API DESC: " + apiModel.getDescription());
 				List<ApiCallModel> apiCallsList = apiModel.getApiCallList();
 				for (ApiCallModel apiCall : apiCallsList) {
 					print("---------------------------");

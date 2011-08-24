@@ -1,0 +1,193 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+  	<title>Isidorey API Documentation</title> 
+	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.0.0.min.css">
+	
+	<script src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
+    <script src="http://autobahn.tablesorter.com/jquery.tablesorter.min.js"></script>
+    <script src="http://dev.isidorey.net/docs/js/apigee.js"></script>
+     
+</head> 
+<body> 
+	<script type="text/javascript">
+		function showHideMenu() {
+			if ($("#secondary-nav-menu").hasClass("open")) {
+				$("#secondary-nav-menu").removeClass("open");
+			} else {
+				$("#secondary-nav-menu").addClass("open");
+			}
+		}
+	</script>
+	<div class="topbar">
+		<div class="fill">
+			<div class="container">
+          		<h3><a href="#">API.doc</a></h3>
+       			<form action="#">
+	            	<input type="text" placeholder="Search" />
+	          	</form>
+	       	   	<ul class="nav secondary-nav">
+		            <li id="secondary-nav-menu" class="menu">
+		            	<a id="calls-menu" href="#" onClick="showHideMenu()"class="menu">Calls</a>
+		              	<ul class="menu-dropdown">
+		                	<li>
+		                		<a href="#calls_get">CALLS (GET)</a>
+		                	</li>
+		                	<li>
+		                		<a href="#login_get">LOGIN (GET)</a>
+		                	</li>
+		              	</ul>
+		            </li>
+		    	</ul>
+        	</div>
+    	</div>
+	</div>
+	<div class="container-fluid">
+       	<div class="content" id="main-content">	
+       		<div style="height: 100px;">
+			</div>
+       		<img src=http://dev.isidorey.net/docs/images/logo.gif align=left valign=bottom alt=Isidorey /><h1></h1>
+       		<div id="calls_get">
+				<div style="height: 100px;">
+				</div>
+				<div class="page-header">
+						<h1>/CALLS<small>GET</small></h1>
+				</div>
+				<div class="alert-message block-message success">
+		    		<p><strong>Description</strong> You successfully read this alert message. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas faucibus mollis interdum.</p>
+		  		</div>
+				<h3>URL Parameters</h3>
+				<table class="common-table zebra-striped">
+					<thead>
+				    	<tr>
+				      		<th>Parameter</th>
+				      		<th>Description</th>
+				      		<th>Required</th>
+				       	</tr>
+					</thead>
+				   	<tbody>
+				      	<tr>
+				            <td>Call 1 Param</td>
+				            <td>Call 1 Desc</td>
+				            <td>Yes</td>
+				       	</tr>
+				        <tr>
+				        	<td>Call 1 Param</td>
+				            <td>Call 1 Desc</td>
+				            <td>Yes</td>
+				       	</tr>
+				       	<tr>
+				            <td>Call 1 Param</td>
+				            <td>Call 1 Desc</td>
+				            <td>Yes</td>
+				       	</tr>
+				  	</tbody>
+				</table>
+				<h3>Header Parameters</h3>
+				<table class="common-table zebra-striped">
+					<thead>
+				    	<tr>
+				      		<th>Parameter</th>
+				      		<th>Description</th>
+				      		<th>Required</th>
+				       	</tr>
+					</thead>
+				   	<tbody>
+				      	<tr>
+				            <td>Call 1 Param</td>
+				            <td>Call 1 Desc</td>
+				            <td>Yes</td>
+				       	</tr>
+				        <tr>
+				        	<td>Call 1 Param</td>
+				            <td>Call 1 Desc</td>
+				            <td>Yes</td>
+				       	</tr>
+				       	<tr>
+				            <td>Call 1 Param</td>
+				            <td>Call 1 Desc</td>
+				            <td>Yes</td>
+				       	</tr>
+				  	</tbody>
+				</table>
+				<br/>
+				<blockquote>
+					<p></p>
+			        <p><strong>http://api.isidorey.net/v0.9/CALL?key=value&key=value</strong></p>
+			        <p></p>
+			    </blockquote>
+		  	</div>
+		  	
+		  	<div id="login_get">
+		  		<div style="height: 100px;">
+				</div>
+				<div class="page-header">
+						<h1>/LOGIN<small>GET</small></h1>
+				</div>
+				<div class="alert-message block-message success">
+		    		<p><strong>Description</strong> You successfully read this alert message. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas faucibus mollis interdum.</p>
+		  		</div>
+				<h3>URL Parameters</h3>
+				<table class="common-table zebra-striped">
+					<thead>
+				    	<tr>
+				      		<th>Parameter</th>
+				      		<th>Description</th>
+				      		<th>Required</th>
+				       	</tr>
+					</thead>
+				   	<tbody>
+				      	<tr>
+				            <td>Call 1 Param</td>
+				            <td>Call 1 Desc</td>
+				            <td>Yes</td>
+				       	</tr>
+				        <tr>
+				        	<td>Call 1 Param</td>
+				            <td>Call 1 Desc</td>
+				            <td>Yes</td>
+				       	</tr>
+				       	<tr>
+				            <td>Call 1 Param</td>
+				            <td>Call 1 Desc</td>
+				            <td>Yes</td>
+				       	</tr>
+				  	</tbody>
+				</table>
+				<h3>Header Parameters</h3>
+				<table class="common-table zebra-striped">
+					<thead>
+				    	<tr>
+				      		<th>Parameter</th>
+				      		<th>Description</th>
+				      		<th>Required</th>
+				       	</tr>
+					</thead>
+				   	<tbody>
+				      	<tr>
+				            <td>Call 1 Param</td>
+				            <td>Call 1 Desc</td>
+				            <td>Yes</td>
+				       	</tr>
+				        <tr>
+				        	<td>Call 1 Param</td>
+				            <td>Call 1 Desc</td>
+				            <td>Yes</td>
+				       	</tr>
+				       	<tr>
+				            <td>Call 1 Param</td>
+				            <td>Call 1 Desc</td>
+				            <td>Yes</td>
+				       	</tr>
+				  	</tbody>
+				</table>
+				<br/>
+				<blockquote>
+					<p></p>
+			        <p><strong>http://api.isidorey.net/v0.9/CALL?key=value&key=value</strong></p>
+			        <p></p>
+			    </blockquote>
+		  	</div>
+    	</div>
+  	</div>
+</body> 

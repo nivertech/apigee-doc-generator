@@ -2,6 +2,7 @@ package com.html.generator;
 
 import java.util.*;
 
+@SuppressWarnings({ "serial", "rawtypes", "unchecked" })
 public class Tag extends LinkedList {
 
 	private Attributes attributes; // tag attributes
