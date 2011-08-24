@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import net.sf.json.JSON;
@@ -37,7 +38,7 @@ import com.isidorey.models.UriParameterModel;
  */
 public class XmlToJsonParser {
 
-	public void generateWebpage(String wadlFile, String generatedDoc) {
+	public void generateWebpage(String wadlFile, String generatedDoc, LinkedHashMap<String, Integer> apiMap, String imgLink) {
 
 		InputStream is = null;
 		try {
@@ -70,7 +71,7 @@ public class XmlToJsonParser {
 		/**
 		 * Parse into html
 		 */
-		htmlCreator.generateBootstrapTemplate(baseApiModel, generatedDoc);
+		htmlCreator.generateBootstrapTemplate(apiMap, baseApiModel, generatedDoc, imgLink);
 	}
 
 	public void generateApigeeWadl(String wadlFile, String apigeeFile) {

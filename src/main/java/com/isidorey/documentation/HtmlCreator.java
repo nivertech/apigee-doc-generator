@@ -4,7 +4,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.html.generator.Tag;
 import com.isidorey.models.ApiCallModel;
@@ -42,8 +44,9 @@ public class HtmlCreator {
 		jsList.add(JS_3);
 	}
 
-	public void generateBootstrapTemplate(BaseApiModel baseApiModel,
-			String localFilename) {
+	public void generateBootstrapTemplate(
+			LinkedHashMap<String, Integer> apiMap, BaseApiModel baseApiModel,
+			String localFilename, String imgLink) {
 
 		BaseApiModel api = baseApiModel;
 		if (Constants.DEBUG)
@@ -61,36 +64,101 @@ public class HtmlCreator {
 
 		Tag h3 = new Tag("h3");
 		Tag a = new Tag("a", "href=#");
-		a.add("API.doc");
+		a.add("doc || " + baseApiModel.getBaseUrl());
 		h3.add(a);
 
-		Tag ul = new Tag("ul", "class=\"nav secondary-nav\"");
-		Tag li = new Tag("li", "id=secondary-nav-menu class=menu");
-		Tag link = new Tag("a", "href=# onClick=showHideMenu() class=menu");
+		divContainer.add(h3);
 
-		li.add(link);
-		
 		List<ApiModel> apiModelList = api.getApiGroupings();
 
-		Tag innerUl = new Tag("ul", "class=menu-dropdown");
-		for (ApiModel apiModel : apiModelList) {
-			List<ApiCallModel> apiCallsList = apiModel.getApiCallList();
-			for (ApiCallModel apiCall : apiCallsList) {
-				Tag innerLi = new Tag("li");
-				Tag innerLink = new Tag("a", "href=#" + apiCall.getPath().replace("/", "") + "_"
-						+ apiCall.getRequestType());
-				innerLink.add(apiCall.getPath() + " ("
-						+ apiCall.getRequestType() + ")");
-				innerLi.add(innerLink);
-				innerUl.add(innerLi);
+		/**
+		 * This allows us to have multiple API *groupings* in one file, and
+		 * fixes the CSS for the bootstrap toolkit which doesn't take into
+		 * account massive menus
+		 */
+		if (apiMap == null) {
+			/**
+			 * Ignore
+			 */
+			Tag ul = new Tag("ul", "class=\"nav secondary-nav\"");
+			Tag li = new Tag("li", "id=secondary-nav-menu class=menu");
+			Tag link = new Tag("a",
+					"href=# onClick=showHideMenu('secondary-nav-menu') class=menu");
+
+			link.add("Calls");
+			li.add(link);
+
+			Tag innerUl = new Tag("ul", "class=menu-dropdown");
+			for (ApiModel apiModel : apiModelList) {
+				List<ApiCallModel> apiCallsList = apiModel.getApiCallList();
+				for (ApiCallModel apiCall : apiCallsList) {
+					Tag innerLi = new Tag("li");
+					Tag innerLink = new Tag("a", "style=font-size:10px href=#"
+							+ apiCall.getPath().replace("/", "") + "_"
+							+ apiCall.getRequestType());
+					innerLink.add(apiCall.getPath() + " ("
+							+ apiCall.getRequestType() + ")");
+					innerLi.add(innerLink);
+					innerUl.add(innerLi);
+
+				}
+			}
+
+			li.add(innerUl);
+			ul.add(li);
+			divContainer.add(ul);
+		} else {
+
+			int counter = 1;
+			int lastCount = 0;
+
+			for (Entry<String, Integer> entry : apiMap.entrySet()) {
+
+				String name = entry.getKey();
+				int count = entry.getValue();
+
+				Tag ul = new Tag("ul", "class=\"nav secondary-nav\"");
+				Tag li = new Tag("li", "id=secondary-nav-menu-" + count
+						+ " class=menu");
+				Tag link = new Tag("a",
+						"href=# onClick=showHideMenu('secondary-nav-menu-"
+								+ count + "') class=menu");
+
+				link.add(name);
+				li.add(link);
+
+				Tag innerUl = new Tag("ul", "class=menu-dropdown");
+				for (ApiModel apiModel : apiModelList) {
+					List<ApiCallModel> apiCallsList = apiModel.getApiCallList();
+					int callCount = 1;
+					for (ApiCallModel apiCall : apiCallsList) {
+						if (counter == callCount) {
+							if (counter > lastCount && counter <= count) {
+								Tag innerLi = new Tag("li");
+								Tag innerLink = new Tag("a",
+										"style=font-size:10px href=#"
+												+ apiCall.getPath().replace(
+														"/", "") + "_"
+												+ apiCall.getRequestType());
+								innerLink.add(apiCall.getPath() + " ("
+										+ apiCall.getRequestType() + ")");
+								innerLi.add(innerLink);
+								innerUl.add(innerLi);
+								counter++;
+							}
+						}
+						callCount++;
+					}
+				}
+
+				lastCount = count;
+
+				li.add(innerUl);
+				ul.add(li);
+				divContainer.add(ul);
 			}
 		}
 
-		li.add(innerUl);
-		ul.add(li);
-
-		divContainer.add(h3);
-		divContainer.add(ul);
 		divFill.add(divContainer);
 		divTopbar.add(divFill);
 		body.add(divTopbar);
@@ -103,7 +171,7 @@ public class HtmlCreator {
 
 		Tag img = new Tag(
 				"img",
-				"src=http://dev.isidorey.net/docs/images/logo.gif align=left valign=bottom alt=Isidorey");
+				"src=" + imgLink + " align=left valign=bottom alt=Isidorey");
 		divContent.add(img);
 
 		for (ApiModel apiModel : apiModelList) {
@@ -174,7 +242,8 @@ public class HtmlCreator {
 				Tag lineBreak = new Tag("br");
 				div.add(lineBreak);
 
-				div.add(generateBlockquote(apiCall.getExampleUrl()));
+				div.add(generateBlockquote(baseApiModel.getBaseUrl(),
+						apiCall.getExampleUrl()));
 				divContent.add(div);
 			}
 		}
@@ -302,11 +371,11 @@ public class HtmlCreator {
 		return table;
 	}
 
-	public Tag generateBlockquote(String exampleUrl) {
+	public Tag generateBlockquote(String baseUrl, String exampleUrl) {
 		Tag blockquote = new Tag("blockquote");
 		Tag p = new Tag("p");
 		Tag strong = new Tag("strong");
-		strong.add(exampleUrl);
+		strong.add(baseUrl + exampleUrl);
 		p.add(strong);
 		blockquote.add(p);
 		return blockquote;

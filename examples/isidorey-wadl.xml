@@ -1,0 +1,919 @@
+<?xml version="1.0"?>
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:apigee="http://api.apigee.com/wadl/2010/07/" xmlns="http://wadl.dev.java.net/2009/02" xsi:schemaLocation="http://wadl.dev.java.net/2009/02 http://apigee.com/schemas/wadl-schema.xsd http://api.apigee.com/wadl/2010/07/ http://apigee.com/schemas/apigee-wadl-extensions.xsd">
+  <resources base="https://api.isidorey.net/v0.9">
+      <resource path="/CALLS">
+        <method id="CALLS_GET" name="GET" apigee:displayName="GET">
+          <apigee:tags>
+            <apigee:tag primary="true">CALLS</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/CALLS"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/CALLS">A list of all available API calls for the current version.</doc>
+        </method>
+      </resource>
+      <resource path="/DOCUMENTATION">
+        <method id="DOCUMENTATION_GET" name="GET" apigee:displayName="GET">
+          <apigee:tags>
+            <apigee:tag primary="true">DOCUMENTATION</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/DOCUMENTATION"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/DOCUMENTATION">Self-generating documentation call.</doc>
+        </method>
+      </resource>
+      <resource path="/LOGIN">
+        <method id="LOGIN_GET" name="GET" apigee:displayName="GET">
+          <apigee:tags>
+            <apigee:tag primary="true">LOGIN</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/LOGIN"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/LOGIN">A list of permissions, or an access control list, pertaining to the authenticated API key.</doc>
+        </method>
+      </resource>
+      <resource path="/APIKEY">
+        <method id="APIKEY_POST" name="POST" apigee:displayName="POST">
+          <apigee:tags>
+            <apigee:tag primary="true">APIKEY</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/APIKEY"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/APIKEY">Creates a new API key</doc>
+          <request>
+            <param name="email" type="text" style="query" required="true" default=""/>
+            <description param="email" text=" The company, or sub-company, in which you are adding a new API key to"/>
+            <param name="companyId" type="text" style="query" required="true" default=""/>
+            <description param="companyId" text="The e-mail address of a user, or group, to associate the API key with.  This e-mail address does not have to be associated with a COMPANYPROJECTUSER of the company"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/APIKEYTOPIC">
+        <method id="APIKEYTOPIC_POST" name="POST" apigee:displayName="POST">
+          <apigee:tags>
+            <apigee:tag primary="true">APIKEYTOPIC</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/APIKEYTOPIC/{companyId}"/>
+          <description uriparam="companyId" text="The company, or sub-company, that the API key you are adding pub/sub permissions to is associated with"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/APIKEYTOPIC">Adds MQtt (pub/sub) permissions to an API key. This allows you to publish and subscribe to messages on device namespaces.</doc>
+          <request>
+            <param name="apiKey" type="text" style="query" required="true" default=""/>
+            <description param="apiKey" text="The API key you are adding pub/sub permissions to"/>
+            <param name="topic" type="text" style="query" required="true" default=""/>
+            <description param="topic" text="The topic in which you are adding pub/sub permissions to, e.g. {company}/#, or a device namespace, e.g. {company}/{project}/{tag}/{asset}/#"/>
+            <param name="sub" type="text" style="query" required="true" default="true||false"/>
+            <description param="sub" text="Allows the API key to subscribe, or not, to data published on the specified topic"/>
+            <param name="pub" type="text" style="query" required="true" default="true||false"/>
+            <description param="pub" text="Allows the API key, and any device associated with it, to publish data, or not, on the specified topic"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/APIKEYTOPIC">
+        <method id="APIKEYTOPIC_DELETE" name="DELETE" apigee:displayName="DELETE">
+          <apigee:tags>
+            <apigee:tag primary="true">APIKEYTOPIC</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/APIKEYTOPIC/{companyId}?apiKey={apiKey}&amp;acl=MqttTopic&amp;topic={topic}"/>
+          <description uriparam="companyId" text="The company, or sub-company, in which you are authenticated with"/>
+          <description uriparam="apiKey" text="The API key you are removing pub/sub permissions from"/>
+          <description uriparam="acl" text="This is defaulted at MqttTopic"/>
+          <description uriparam="topic" text="The topic in which you are removing pub/sub permissions to, e.g. {company}/#, or {company}/{project}/{tag}/{asset}/#"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/APIKEYTOPIC">Removes MQTT (pub/sub) permissions from an API key on a specified topicor namespace.</doc>
+        </method>
+      </resource>
+      <resource path="/APIKEYURL">
+        <method id="APIKEYURL_POST" name="POST" apigee:displayName="POST">
+          <apigee:tags>
+            <apigee:tag primary="true">APIKEYURL</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/APIKEYURL/{companyId}"/>
+          <description uriparam="companyId" text="The company, or sub-company, that the API key you are adding API permissions to is associated with"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/APIKEYURL/{companyId}">Adds API permissions to an API key depending on the specified call andcompany ID.</doc>
+          <request>
+            <param name="apiKey" type="text" style="query" required="true" default=""/>
+            <description param="apiKey" text="The API key you are adding URL permissions to"/>
+            <param name="call" type="text" style="query" required="true" default=""/>
+            <description param="call" text="The API call that makes up the URL"/>
+            <param name="path" type="text" style="query" required="true" default="/#"/>
+            <description param="path" text="The specific path, usually company related, that makes up the URL"/>
+            <param name="post" type="text" style="query" required="true" default="true||false"/>
+            <description param="post" text="Allows the API key to make POST requests, or not, to the URL"/>
+            <param name="get" type="text" style="query" required="true" default="true||false"/>
+            <description param="get" text="Allows the API key to make GET requests, or not, on the URL"/>
+            <param name="delete" type="text" style="query" required="true" default="true||false"/>
+            <description param="delete" text="Allows the API key to make DELETE requests, or not, on the URL"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/APIKEYURL">
+        <method id="APIKEYURL_DELETE" name="DELETE" apigee:displayName="DELETE">
+          <apigee:tags>
+            <apigee:tag primary="true">APIKEYURL</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/APIKEYURL/?apiKey={apiKey}&amp;acl=ApiUrl&amp;namespace={namespace}"/>
+          <description uriparam="apiKey" text="The API key you are removing URL permissions from"/>
+          <description uriparam="acl" text="This is defaulted at ApiUrl"/>
+          <description uriparam="namespace" text="The namespace in which you are removing API permissions from, e.g. {company}/#, or {company}/{project}/{tag}/{asset}/#"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/APIKEYURL">Removes API permissions to an API key depending on the specified call and company ID.</doc>
+        </method>
+      </resource>
+      <resource path="/COMPANY">
+        <method id="COMPANY_GET" name="GET" apigee:displayName="GET">
+          <apigee:tags>
+            <apigee:tag primary="true">COMPANY</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COMPANY/{companyId}"/>
+          <description uriparam="companyId" text="The company, or sub-company, to get information for"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COMPANY">Lists information associated with a company.</doc>
+        </method>
+      </resource>
+      <resource path="/COMPANY">
+        <method id="COMPANY_POST" name="POST" apigee:displayName="POST">
+          <apigee:tags>
+            <apigee:tag primary="true">COMPANY</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COMPANY/{companyId}/"/>
+          <description uriparam="companyId" text="The company, or sub-company, associated with permissioning"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COMPANY/">Creates a new company, sub-company, or updates a current company, or sub-company.</doc>
+          <request>
+            <param name="fullname" type="text" style="query" required="true" default=""/>
+            <description param="fullname" text="The name of the new company, or sub-company"/>
+            <param name="subCompanyId" type="text" style="query" required="false" default=""/>
+            <description param="subCompanyId" text="The ID of the sub-company to update" optional="true"/>
+            <param name="companyId" type="text" style="query" required="false" default=""/>
+            <description param="companyId" text="The ID of the company to update" optional="true"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/COMPANYPROJECT">
+        <method id="COMPANYPROJECT_GET" name="GET" apigee:displayName="GET">
+          <apigee:tags>
+            <apigee:tag primary="true">COMPANYPROJECT</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COMPANYPROJECT/{companyId}/{projectId}"/>
+          <description uriparam="companyId" text="The company ID the project is associated with"/>
+          <description uriparam="projectId" text="The project ID whose infomration to list"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COMPANYPROJECT">Lists information associated with a company's, or sub-company's, project.</doc>
+        </method>
+      </resource>
+      <resource path="/COMPANYPROJECT">
+        <method id="COMPANYPROJECT_POST" name="POST" apigee:displayName="POST">
+          <apigee:tags>
+            <apigee:tag primary="true">COMPANYPROJECT</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COMPANYPROJECT/{companyId}"/>
+          <description uriparam="companyId" text="The company ID of the associated project"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COMPANYPROJECT">Creates a new project under a given company, or sub-company.</doc>
+          <request>
+            <param name="name" type="text" style="query" required="true" default=""/>
+            <description param="name" text="The name of the new project"/>
+            <param name="description" type="text" style="query" required="true" default=""/>
+            <description param="description" text="The description of the new project"/>
+            <param name="projectId" type="text" style="query" required="false" default=""/>
+            <description param="projectId" text="The ID of the project to update"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/COMPANYPROJECT">
+        <method id="COMPANYPROJECT_DELETE" name="DELETE" apigee:displayName="DELETE">
+          <apigee:tags>
+            <apigee:tag primary="true">COMPANYPROJECT</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COMPANYPROJECT/{companyId}/{projectId}"/>
+          <description uriparam="companyId" text="The company ID the project is associated with"/>
+          <description uriparam="projectId" text="The project ID to delete"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COMPANYPROJECT_DELETE">Removes the given project from the company or sub-company.</doc>
+        </method>
+      </resource>
+      <resource path="/COMPANYPROJECTDEVICE">
+        <method id="COMPANYPROJECTDEVICE_GET" name="GET" apigee:displayName="GET">
+          <apigee:tags>
+            <apigee:tag primary="true">COMPANYPROJECTDEVICE</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COMPANYPROJECTDEVICE/{companyId}/{projectId}?limit=1000&amp;prevKey={deviceId}&amp;showRecycle={true||false}"/>
+          <description uriparam="companyId" text="The company ID the device is associated with"/>
+          <description uriparam="projectId" text="The project ID the device is associated with"/>
+          <description uriparam="limit" text="Defaults to 100, maxes at 1000 " optional="true"/>
+          <description uriparam="prevKey" text="The device ID that we paginate from" optional="true"/>
+          <description uriparam="showRecycle" text="Deleted devices, which can stay around depending on the license, can be viewed this way" optional="true"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COMPANYPROJECTDEVICE_GET">Lists the devices releated to a project.</doc>
+        </method>
+      </resource>
+      <resource path="/COMPANYPROJECTDEVICE">
+        <method id="COMPANYPROJECTDEVICE_POST" name="POST" apigee:displayName="POST">
+          <apigee:tags>
+            <apigee:tag primary="true">COMPANYPROJECTDEVICE</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COMPANYPROJECTDEVICE/{companyId}/{projectId}"/>
+          <description uriparam="companyId" text="The company ID the device is associated with"/>
+          <description uriparam="projectId" text="The project ID the device is associated with"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COMPANYPROJECTDEVICE_POST">Updates, or adds, metadata relating to a specific device ID.</doc>
+          <request>
+            <param name="deviceId" type="text" style="query" required="true" default=""/>
+            <description param="deviceId" text="The deviceID to update or add metadata to"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/COMPANYPROJECTDEVICE">
+        <method id="COMPANYPROJECTDEVICE_DELETE" name="DELETE" apigee:displayName="DELETE">
+          <apigee:tags>
+            <apigee:tag primary="true">COMPANYPROJECTDEVICE</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COMPANYPROJECTDEVICE/{companyId}/{projectId}/{deviceId}"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COMPANYPROJECTDEVICE_DELETE">Removes a device from a given project by putting it in the "Recycle Bin".  Data pertaining to the device will stick around for a period of time, or indefinitely, depending on the license.</doc>
+        </method>
+      </resource>
+      <resource path="/COMPANYPROJECTUSER">
+        <method id="COMPANYPROJECTUSER_GET" name="GET" apigee:displayName="GET">
+          <apigee:tags>
+            <apigee:tag primary="true">COMPANYPROJECTUSER</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COMPANYPROJECTUSER/{companyId}/{projectId}/{email}"/>
+          <description uriparam="companyId" text="The company ID the user is associated with"/>
+          <description uriparam="projectId" text="The project ID the user is associated with"/>
+          <description uriparam="email" text="The e-mail address of the user"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COMPANYPROJECTUSER">Lists the information related to a user in a company or sub-company.</doc>
+        </method>
+      </resource>
+      <resource path="/COMPANYPROJECTUSER">
+        <method id="COMPANYPROJECTUSER_POST" name="POST" apigee:displayName="POST">
+          <apigee:tags>
+            <apigee:tag primary="true">COMPANYPROJECTUSER</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COMPANYPROJECTUSER/{companyId}/{projectId}"/>
+          <description uriparam="companyId" text="The company ID the user will be associated with"/>
+          <description uriparam="projectId" text="The project ID the user will be associated with"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COMPANYPROJECTUSER">Adds a user to a given project in a company or sub-company.</doc>
+          <request>
+            <param name="email" type="text" style="query" required="true" default=""/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/COMPANYPROJECTUSER">
+        <method id="COMPANYPROJECTUSER_DELETE" name="DELETE" apigee:displayName="DELETE">
+          <apigee:tags>
+            <apigee:tag primary="true">COMPANYPROJECTUSER</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COMPANYPROJECTUSER/{companyId}/{projectId}/{email}"/>
+          <description uriparam="companyId" text="The company ID the project is associated with"/>
+          <description uriparam="projectId" text="The project ID to remove the user from"/>
+          <description uriparam="email, The e-mail address of the user"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COMPANYPROJECTUSER_DELETE">Removes a user from a given project in a company or sub-company.</doc>
+        </method>
+      </resource>
+      <resource path="/FILELISTING">
+        <method id="FILELISTING" name="GET" apigee:displayName="FILELISTING">
+          <apigee:tags>
+            <apigee:tag primary="true">FILELISTING</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/FILELISTING/{bucket}"/>
+          <description uriparam="bucket" text="The bucket, or company/sub-company ID to list files from"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/FILELISTING">Lists all the files in a given bucket.</doc>
+        </method>
+      </resource>
+      <resource path="/UPLOADFILE">
+        <method id="UPLOADFILE" name="POST" apigee:displayName="POST">
+          <apigee:tags>
+            <apigee:tag primary="true">UPLOADFILE</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/UPLOADFILE/{bucket}/{filename}?folder={folder}&amp;override={true||false}&amp;makePublic={true||false}"/>
+          <description uriparam="bucket" text="The bucket, or company/sub-company ID to upload the file to"/>
+          <description uriparam="filename" text="The local/remote name of the file"/>
+          <description uriparam="folder" text="The remote storage path of the file, e.g. /remote/storage/path" optional="true"/>
+          <description uriparam="override" text="Force an existing file to be overwritten" optional="true"/>
+          <description uriparam="makePublic" text="Make the file available for HTTP or torrent download via an S3 URL" optional="true"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/UPLOADFILE">Uploads a file to a bucket with a 10MB maximum. If the file exists, itwill not be overwritten by default. By default, the file is not publicly available.</doc>
+        </method>
+      </resource>
+      <resource path="/DOWNLOADFILE">
+        <method id="DOWNLOADFILE" name="GET" apigee:displayName="DOWNLOADFILE">
+          <apigee:tags>
+            <apigee:tag primary="true">DOWNLOADFILE</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/DOWNLOADFILE/{bucket}/{filename}?folder={folder}"/>
+          <description uriparam="bucket" text="The bucket, or company/sub-company ID to grab the file from"/>
+          <description uriparam="filename" text="The remote name of the file"/>
+          <description uriparam="folder" text="The remote storage path of the file, e.g. /remote/storage/path" optional="true"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/DOWNLOADFILE">Downloads a file from our cloud file storage given a bucket and filename, with an optional sub-folder specified.</doc>
+        </method>
+      </resource>
+      <resource path="/DELETEFILE">
+        <method id="DELETEFILE" name="DELETE" apigee:displayName="DELETEFILE">
+          <apigee:tags>
+            <apigee:tag primary="true">DELETEFILE</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/DELETEFILE/{bucket}/{filename}?folder={folder}"/>
+          <description uriparam="bucket" text="The bucket, or company/sub-company ID to delete the file from"/>
+          <description uriparam="filename" text="The remote name of the file"/>
+          <description uriparam="folder" text="The remote storage path of the file, e.g. /remote/storage/path" optional="true"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/DOWNLOADFILE">Deletes a file from our secure cloud file storage given a bucket and filename.</doc>
+        </method>
+      </resource>
+      <resource path="/PUBLISH">
+        <method id="PUBLISH" name="POST" apigee:displayName="POST">
+          <apigee:tags>
+            <apigee:tag primary="true">PUBLISH</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/PUBLISH/{companyId}/{projectId}/{tag}/{asset}"/>
+          <description uriparam="companyId" text="The company ID in the namespace of the device"/>
+          <description uriparam="projectId" text="The project ID in the namespace of the device"/>
+          <description uriparam="tag" text="The tag in the namespace of the device"/>
+          <description uriparam="asset" text="The asset in the namespace of the device"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/PUBLISH">Publishes data to the platform, e.g. sends data and emulates a device inits entirety.</doc>
+          <request>
+            <param name="field" type="text" style="query" required="true" default=""/>
+            <description param="field" text="The field in the namepsace of the device"/>
+            <param name="key" type="text" style="query" required="true" default="value"/>
+            <description param="key" text="key/value pairs to make available in LIVE, HISTORY like a standard device"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/REALTIME">
+        <method id="REALTIME" name="POST" apigee:displayName="POST">
+          <apigee:tags>
+            <apigee:tag primary="true">REALTIME</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/REALTIME/{companyId}/{projectId}/{tag}/{asset}"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/REALTIME">Publishes data to the platform, e.g. sends data and emulates a device inits entirety, but skips the datatstore.</doc>
+        </method>
+      </resource>
+      <resource path="/LIVE">
+        <method id="LIVE_GET" name="GET" apigee:displayName="GET">
+          <apigee:tags>
+            <apigee:tag primary="true">LIVE</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/LIVE/{companyId}/{projectId}/{tag}/{asset}"/>
+          <description uriparam="companyId" text="The company ID in the namespace of the device"/>
+          <description uriparam="projectId" text="The project ID in the namespace of the device"/>
+          <description uriparam="tag" text="The tag in the namespace of the device"/>
+          <description uriparam="asset" text="The asset in the namespace of the device"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/LIVE_GET">Lists last known fields and entries sent to the platform for a given device.</doc>
+        </method>
+      </resource>
+      <resource path="/LIVE">
+        <method id="LIVE_POST" name="POST" apigee:displayName="POST">
+          <apigee:tags>
+            <apigee:tag primary="true">LIVE</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/LIVE/{companyId}/{projectId}/{tag}/{asset}/{field}"/>
+          <description uriparam="companyId" text="The company ID in the namespace of the device"/>
+          <description uriparam="projectId" text="The project ID in the namespace of the device"/>
+          <description uriparam="tag" text="The tag in the namespace of the device"/>
+          <description uriparam="asset" text="The asset in the namespace of the device"/>
+          <description uriparam="field" text="The field in the namespace of the device"/>
+          <doc title="" apigee:url="https://api.isidsorey.net/v0.9/LIVE">Adds a new key/value pair to field in LIVE.</doc>
+          <request>
+            <param name="key" type="text" style="query" required="true" default="value"/>
+            <description param="key" text="The key/value pair to add to LIVE"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/LIVE">
+        <method id="LIVE_DELETE" name="DELETE" apigee:displayName="DELETE">
+          <apigee:tags>
+            <apigee:tag primary="true">LIVE</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/LIVE/{companyId}/{projectId}/{tag}/{asset}?field={field}&amp;entry={entry}"/>
+          <description uriparam="companyId" text="The company ID in the namespace of the device"/>
+          <description uriparam="projectId" text="The project ID in the namespace of the device"/>
+          <description uriparam="tag" text="The tag in the namespace of the device"/>
+          <description uriparam="asset" text="The asset in the namespace of the device"/>
+          <description uriparam="field" text="The field in the namespace of the device"/>
+          <description uriparam="entry" text="The specific entry in the namespace of the device to delete" optional="true"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/LIVE">Deletes a given record from LIVE data storage. Specifying field deletes the key/value pair, while not specifying it removes the entire entry.</doc>
+        </method>
+      </resource>
+      <resource path="/HISTORY/FIELD">
+        <method id="HISTORY_FIELD" name="GET" apigee:displayName="GET (FIELD)">
+          <apigee:tags>
+            <apigee:tag primary="true">HISTORY</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/HISTORY/{companyId}/{projectId}/{tag}/{asset}/{field}?limit={limit}&amp;prevKey={prevKey}&amp;olderEpoch={olderEpoch}&amp;newerEpoch={newerEpoch}"/>
+          <description uriparam="companyId" text="The company ID in the namespace of the device"/>
+          <description uriparam="projectId" text="The project ID in the namespace of the device"/>
+          <description uriparam="tag" text="The tag in the namespace of the device"/>
+          <description uriparam="asset" text="The asset in the namespace of the device"/>
+          <description uriparam="field" text="The field in the namespace of the device"/>
+          <description uriparam="limit" text="Defaults to max of 1000"/>
+          <description uriparam="prevKey" text="To paginate, use this option"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/HISTORY">Lists time ordered historicals record for the given field. prevKey should be used in combination with limit to facilitate paging in your application. Pass in a range of epochs for time-based history search.</doc>
+        </method>
+      </resource>
+      <resource path="/HISTORY/FIELD/ENTRY">
+        <method id="HISTORY_FIELD_ENTRY" name="GET" apigee:displayName="GET (ENTRY)">
+          <apigee:tags>
+            <apigee:tag primary="true">HISTORY</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/HISTORY/{companyId}/{projectId}/{tag}/{asset}/{field}/{entry}?limit={limit}&amp;prevKey={prevKey}&amp;olderEpoch={olderEpoch}&amp;newerEpoch={newerEpoch}"/>
+          <description uriparam="companyId" text="The company ID in the namespace of the device"/>
+          <description uriparam="projectId" text="The project ID in the namespace of the device"/>
+          <description uriparam="tag" text="The tag in the namespace of the device"/>
+          <description uriparam="asset" text="The asset in the namespace of the device"/>
+          <description uriparam="field" text="The field in the namespace of the device"/>
+          <description uriparam="entry" text="The entry in the namespace of the device"/>
+          <description uriparam="limit" text="Defaults to max of 1000"/>
+          <description uriparam="prevKey" text="To paginate, use this option"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/HISTORY">Lists time ordered historical records for the given field's specific entry. prevKey should be used in combination with limit to facilitate paging in your application. Pass in a range of epochs for time-based history search. </doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/criteria">
+        <method id="CRITERIA_POST" name="POST" apigee:displayName="criteria (POST)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+            <apigee:tag>Create a criterion</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/criteria/"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/criteria/">Create a criterion. Every rule needs at least one criterion. A criterion can be a part of multiple rules. You can update this criterion at any time. If you have more than one criterion in place, and turn if off, the rule will still work with the other criteria. If the criterion is turned off, and is a part of other rules, those will also ignore the criterion. A criterion maps to the field/entry of your device.</doc>
+          <request>
+            <param name="isActive" type="text" style="query" required="true" default="true||false"/>
+            <description param="isActive" text="This parameter provides the least interference when turning on/off rules firing.  If the criterion is false and part of an active rule, it will not be evaluated"/>
+            <param name="field" type="text" style="query" required="true" default="sensor\/entry"/>
+            <description param="field" text="This parameter is really defined by the {field}\/{entry}; of your device's reporting namespace, which would be {company}/{project}/{tag}/{asset}/{field}/{entry}.  If there is a JSON mapping between the protocol and your LIVE data, either the LIVE record can be used or the actual way the device sends data"/>
+            <param name="value" type="text" style="query" required="true" default=""/>
+            <description param="value" text="For non-nested values, this is simply the value associated with the {entry}, and the threshold value for firing a rule"/>
+            <param name="operator" type="text" style="query" required="true" default="GT||GTE||LT||LTE||EQ||NEQ||CONTAINS||DOES_NOT_CONTAIN"/>
+            <description param="operator" text="This parameter defines which way the threshold value will be evaluated"/>
+            <param name="criteriaId" type="text" style="query" required="false" default=""/>
+            <description param="criteriaId" text="This parameter is used for updating, or upserting, a criterion" optional="true"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/criteria">
+        <method id="CRITERIA_GET" name="GET" apigee:displayName="criteria (GET)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/criteria?criteriaId={criteriaId}"/>
+          <description uriparam="criteriaId" text="The criterion ID in which to display"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/criteria">Get a criterion.</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/criteria">
+        <method id="CRITERIA_GET_ALL" name="GET" apigee:displayName="GET ALL">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/criteria"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/criteria">Get all criterion.</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/criteria">
+        <method id="CRITERIA_DELETE" name="DELETE" apigee:displayName="criteria (DELETE)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/criteria?criteriaId={criteriaId}"/>
+          <description uriparam="criteriaId" text="The criterion ID in which to delete"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/criteria">Delete a criterion.</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/target">
+        <method id="TARGET_POST" name="POST" apigee:displayName="target (POST)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/target/"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/target/">Create a target. Every rule needs a target. A target can be a part ofmultiple rules. A target only requires one notifcation parameter to be specified.</doc>
+          <request>
+            <param name="email" type="text" style="query" required="false" default=""/>
+            <description param="email" text="This parameter is the e-mail address of the target to be notified via e-mail on rule firing" optional="true"/>
+            <param name="webserviceUrl" type="text" style="query" required="false" default=""/>
+            <description param="webserviceUrl" text="The standard firing message will be POSTed in key/value pairs to a URL." optional="true"/>
+            <description param="sms" text="This parameter is the phone number of the target to be notified via text-messaging, or SMS, on rule firing.  If {sms} is specified, {smsAccessId}, {token}, and {from} must also be specified" optional="true"/>
+            <param name="from" type="text" style="query" required="false" default=""/>
+            <description param="from" text="One of the provisioned phone numbers given to you by Isidorey" optional="true"/>
+            <param name="smsAccessId" type="text" style="query" required="false" default=""/>
+            <description param="smsAccessId" text="The SMS access ID given to you by Isiodrey"/>
+            <param name="token" type="text" style="query" required="false" default=""/>
+            <description param="token" text="The SMS token given to you by Isidorey" optional="true"/>
+            <param name="targetId" type="text" style="query" required="false" default=""/>
+            <description param="targetId" text="This parameter is used for updating, or upserting, a target" optional="true"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/target">
+        <method id="TARGET_GET" name="GET" apigee:displayName="target (GET)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/target?targetId={targetId}"/>
+          <description uriparam="targetId" text="The target ID in which to display"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/target">Get a target</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/target">
+        <method id="TARGET_GET_ALL" name="GET" apigee:displayName="GET ALL">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/target"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/target">Get all targets.</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/target">
+        <method id="TARGET_DELETE" name="DELETE" apigee:displayName="target (DELETE)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/target?targetId={targetId}"/>
+          <description uriparam="targetId" text="The target ID in which to delete"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/target">Delete a target.</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/rule">
+        <method id="RULE_POST" name="POST" apigee:displayName="rule (POST)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/rule/"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/rule/">Create a rule. A rule is simply a description, and is the mapping between the device namespace, declared in the topicMapping, and the criteria, declared in the ruleMapping. It can be used to describe single rules or to describe groups of rules with similar criteria.</doc>
+          <request>
+            <param name="name" type="text" style="query" required="true" default=""/>
+            <description param="name" text="This is the name of the rule"/>
+            <param name="description" type="text" style="query" required="true" default=""/>
+            <description param="description" text="This is the description of the rule"/>
+            <param name="emailSubject" type="text" style="query" required="false" default=""/>
+            <description param="emailSubject" text="This is the email subject of the rule"/>
+            <param name="emailBody" type="text" style="query" required="false" default=""/>
+            <description param="emailBody" text="This parameter allows you to specify the email body of the SMS in 160 characters or less (variable depending on namespace, etc).  It will completely override the default SMS message. - replacements for emailSubject, emailBody and smsBody can be defined with the following replacement strings:     - @NAMESPACE@     - @RULE@     - @FIELD@     - @OPERATOR@     - @VALUE@"/>
+            <param name="smsBody" type="text" style="query" required="false" default=""/>
+            <description param="smsBody" text="This parameter allows you to specify the message body of the SMS in 160 characters or less (variable depending on namespace, etc).  It will completely override the default SMS message. - replacements for emailSubject, emailBody and smsBody can be defined with the following replacement strings:     - @NAMESPACE@     - @RULE@     - @FIELD@     - @OPERATOR@     - @VALUE@"/>
+            <param name="ruleId" type="text" style="query" required="false" default=""/>
+            <description param="ruleId" text="This parameter is used for updating, or upserting, a rule"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/rule">
+        <method id="RULE_GET" name="GET" apigee:displayName="rule (GET)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/rule?ruleId={ruleId}"/>
+          <description uriparam="ruleId" text="The rule ID to display"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/rule">Get a rule.</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/rule">
+        <method id="RULE_DELETE" name="DELETE" apigee:displayName="rule (DELETE)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/rule?ruleId={ruleId}"/>
+          <description uriparam="ruleId" text="The rule ID to delete"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/rule">Delete a rule.</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/topicMapping">
+        <method id="TOPICMAPPING_POST" name="POST" apigee:displayName="topicMapping (POST)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/topicMapping/"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/topicMapping/">Create a topic mapping. A topic mapping maps a device's namespace to rules. This tells the engine to fire the rule when a matching namespace is active on the platform. You can go as high as the company/# attribute, effectivelychecking for a threshold on a criterion for every device that reports data.</doc>
+          <request>
+            <param name="isActive" type="text" style="query" required="true" default="true||false"/>
+            <description uriparam="isActive" text="This parameter turns off the entire rule firing.  N amount of active criteria associated with this rule will still not be fired.  If there are two rules with two different topic mappings that have the same namespace, these will not affect each other"/>
+            <param name="namespace" type="text" style="query" required="true" default=""/>
+            <description uriparam="namespace" text="The namepsace in which we will trigger a rule check"/>
+            <param name="topicId" type="text" style="query" required="true" default=""/>
+            <description uriparam="topicID" text="This parameter is used for updating, or upserting, a topicMapping"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/topicMapping">
+        <method id="TOPICMAPPING_GET_ALL" name="GET" apigee:displayName="GET ALL">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/topicMapping/"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/topicMapping">Get all topic mappings.</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/topicMapping">
+        <method id="TOPICMAPPING_GET_MAPPING" name="GET" apigee:displayName="topicMapping (GET)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/topicMapping?topicId={topicId}"/>
+          <description uriparam="topicId" text="The topic mapping to display based on topic ID"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/topicMapping">Get a topic mapping by ID.</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/topicMapping">
+        <method id="TOPICMAPPING_GET_NAMESPACE" name="GET" apigee:displayName="topicMapping (GET)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/topicMapping?namespace={namespace}"/>
+          <description uriparam="namespace" text="The namespace to get in regards to the topic mapping to display"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/topicMapping">Get a topic mapping by namespace.</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/topicMapping">
+        <method id="TOPICMAPPING_DELETE" name="DELETE" apigee:displayName="topicMapping (DELETE)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+            <apigee:tag>Delete a topic mapping</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/topicMapping?topicMappingId={topicMappingId}"/>
+          <description uriparam="topicId" text="The topic mapping ID to delete"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/topicMapping">Delete a topic mapping.</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/ruleMapping">
+        <method id="RULEMAPPING_POST" name="POST" apigee:displayName="ruleMapping (POST)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+            <apigee:tag>Create a rule mapping</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/ruleMapping/"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/ruleMapping/">Create a rule mapping. A rule mapping is the final, relational step, between everything we've created so far. Here, we can specify the context in which the criteria get evaluated. Only one target can be specified; to push notifications to multiple targets would be a good use-case for WEBSERVICE.</doc>
+          <request>
+            <param name="ruleId" type="text" style="query" required="true" default=""/>
+            <description param="ruleId" text="This specifies the rule to group this mapping with.  Being able to change the name and description of the associated rule allows you to adapt and update as well"/>
+            <param name="criteriaId1" type="text" style="query" required="true" default=""/>
+            <description param="criteriaId1" text="This specifies a single criterion to be associated with a rule and target"/>
+            <param name="targetId" type="text" style="query" required="true" default=""/>
+            <description param="targetId" text="This specifies a single target to be associated with a rule and criterion"/>
+            <param name="andCriteria" type="text" style="query" required="false" default="true||false"/>
+            <description param="andCriteria" text="This specifies an AND evaluation of criteria1 &amp;&amp; criteria2"/>
+            <param name="orCriteria" type="text" style="query" required="false" default="true||false"/>
+            <description param="orCriteria" text="This specifies an OR evaluation of criteria1 &amp;&amp; criteria2"/>
+            <param name="criteriaId2" type="text" style="query" required="false" default=""/>
+            <description param="criteriaId2" text="If you want to specify another threshold to evaluate on, you must specify a second criterion"/>
+            <param name="emailTarget" type="text" style="query" required="false" default="true||false"/>
+            <description param="emailTarget" text="If the target has this attribute available, you can specify an e-mail notification"/>
+            <param name="smsTarget" type="text" style="query" required="false" default="true||false"/>
+            <description param="smsTarget" text="If the target has this attribute available, you can specify an SMS notification"/>
+            <param name="webserviceTarget" type="text" style="query" required="false" default="true||false"/>
+            <description param="webserviceTarget" text="If the target has this attribute available, you can specify a webservice POST notification"/>
+            <param name="ruleMappingId" type="text" style="query" required="false" default=""/>
+            <description param="ruleMappingId" text="This parameter is used for updating, or upserting, a ruleMapping"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/ruleMapping">
+        <method id="RULEMAPPING_GET_MAPPING" name="GET" apigee:displayName="ruleMapping (GET)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/ruleMapping?ruleMappingId={ruleMappingId}"/>
+          <description uriparam="ruleMappingId" text="The rule mapping to display"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/ruleMapping">Get a rule mapping.</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/ruleMapping">
+        <method id="RULEMAPPING_GET_RULE" name="GET" apigee:displayName="ruleMapping (GET)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/ruleMapping?ruleId={ruleId}"/>
+          <description uriparam="ruleId" text="The rule mapping(s) to display based on rule ID"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/ruleMapping">Get a rule mapping by rule ID.</doc>
+        </method>
+      </resource>
+      <resource path="/RULESENGINE/ruleMapping">
+        <method id="RULEMAPPING_DELETE" name="DELETE" apigee:displayName="ruleMapping (DELETE)">
+          <apigee:tags>
+            <apigee:tag primary="true">RULESENGINE API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/RULESENGINE/ruleMapping?ruleMappingId={ruleMappingId}"/>
+          <description uriparam="ruleMappingId" text="The rule mapping to delete"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/RULESENGINE/ruleMapping">Delete a rule mapping.</doc>
+        </method>
+      </resource>
+      <resource path="/COLUMNFAMILY">
+        <method id="COLUMNFAMILY_POST" name="POST" apigee:displayName="COLUMNFAMILY (POST)">
+          <apigee:tags>
+            <apigee:tag primary="true">CLOUDSANDRA API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COLUMNFAMILY/{cfName}/{cType}"/>
+          <description uriparam="cfName" text="The name of the new column family, or table"/>
+          <description uriparam="cType" text="The comparator type of column values can be one of the following: ASCIITYPE, BYTESTYPE, INTEGERTYPE, LEXICALUUIDTYPE, LONGTYPE, TIMEUUIDTYPE, UTF8TYPE, UUIDTYPE"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COLUMNFAMILY">Creates a new column family.</doc>
+        </method>
+      </resource>
+      <resource path="/COLUMNFAMILY">
+        <method id="COLUMNFAMILY_GET" name="GET" apigee:displayName="COLUMNFAMILY (GET)">
+          <apigee:tags>
+            <apigee:tag primary="true">CLOUDSANDRA API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COLUMNFAMILY/{cfName}"/>
+          <description uriparam="cfName" text="The name of the column family whose description you want to view"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COLUMNFAMILY">Gets a column family's description.</doc>
+        </method>
+      </resource>
+      <resource path="/COLUMNFAMILY">
+        <method id="COLUMNFAMILY_GET_ALL" name="GET" apigee:displayName="GET ALL">
+          <apigee:tags>
+            <apigee:tag primary="true">CLOUDSANDRA API</apigee:tag>
+            <apigee:tag>ColumnFamily Get All</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COLUMNFAMILY"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COLUMNFAMILY">Gets all the column families associated with the company ID.</doc>
+        </method>
+      </resource>
+      <resource path="/COLUMNFAMILY">
+        <method id="COLUMNFAMILY_DELETE" name="DELETE" apigee:displayName="COLUMNFAMILY (DELETE)">
+          <apigee:tags>
+            <apigee:tag primary="true">CLOUDSANDRA API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COLUMNFAMILY/{cfName}"/>
+          <description uriparam="cfName" text="The name of the column family to delete"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COLUMNFAMILY">Deletes a specified column family.</doc>
+        </method>
+      </resource>
+      <resource path="/COLUMN">
+        <method id="COLUMN_POST" name="POST" apigee:displayName="COLUMN (POST)">
+          <apigee:tags>
+            <apigee:tag primary="true">CLOUDSANDRA API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COLUMN/{cfName}/{cName}/{cType}"/>
+          <description uriparam="cfName" text="The name of the column family to create colum under"/>
+          <description uriparam="cName" text="The name of the column to create"/>
+          <description uriparam="cType" text="The comparator type of the column can be one of the following: ASCIITYPE, BYTESTYPE, INTEGERTYPE, LEXICALUUIDTYPE, LONGTYPE, TIMEUUIDTYPE, UTF8TYPE, UUIDTYPE"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COLUMN">Creates a column that can be searchable in CQL if indexed.</doc>
+          <request>
+            <param name="isIndex" type="text" style="query" required="true" default="true||false"/>
+            <description param="isIndex" text="Specify a true value to make the column searchable in a CQL query"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/DATA">
+        <method id="DATA_POST" name="POST" apigee:displayName="DATA (POST)">
+          <apigee:tags>
+            <apigee:tag primary="true">CLOUDSANDRA API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/DATA/{cfName}/{rowKey}?ttl={ttlInSeconds}&amp;realtime={true/false}"/>
+          <description uriparam="cfName" text="The name of the column family where the key is"/>
+          <description uriparam="rowKey" text="The name of the row where data is being stored"/>
+          <description uriparam="ttl" text="The time-to-live of the data in seconds" optional="true"/>
+          <description uriparam="realtime" text="Sends data to a realtime channel as well" optional="true"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/DATA">Posts data to a column family using the specified row.</doc>
+          <request>
+            <param name="key" type="text" style="query" required="true" default="value"/>
+            <description param="key" text="An limited amount of key/value pairs that represent data to be stored in the row"/>
+          </request>
+        </method>
+      </resource>
+      <resource path="/DATA">
+        <method id="DATA_GET" name="GET" apigee:displayName="DATA (GET)">
+          <apigee:tags>
+            <apigee:tag primary="true">CLOUDSANDRA API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/DATA/{cfName}/{rowKey}?limit={limit}"/>
+          <description uriparam="cfName" text="The name of the column family where the key is"/>
+          <description uriparam="rowKey" text="The name of the key to get data from"/>
+          <description uriparam="limit" text="Specify the limit of the data to be returned" optional="true"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/DATA">Gets data from a column family with the given row key.</doc>
+        </method>
+      </resource>
+      <resource path="/DATA">
+        <method id="DATA_DELETE_ROW" name="DELETE" apigee:displayName="DATA DELETE (row)">
+          <apigee:tags>
+            <apigee:tag primary="true">CLOUDSANDRA API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/DATA/{cfName}/{rowKey}"/>
+          <description uriparam="cfName" text="The name of the column family where the key is"/>
+          <description uriparam="rowKey" text="The name of the row to delete"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/DATA">Deletes all the data under a row. If a GET call is done after this, the key will return with no data.</doc>
+        </method>
+      </resource>
+      <resource path="/DATA">
+        <method id="DATA_DELETE_KEY" name="DELETE" apigee:displayName="DATA DELETE (key/value)">
+          <apigee:tags>
+            <apigee:tag primary="true">CLOUDSANDRA API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/DATA/{cfName}/{rowKey}/{field}"/>
+          <description uriparam="cfName" text="The name of the column family where the key is"/>
+          <description uriparam="rowKey" text="The name of the row"/>
+          <description uriparam="field" text="The name of the key in the key/value pair to delete"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/DATA">Deletes a key/value pair under a key.</doc>
+        </method>
+      </resource>
+      <resource path="/COUNTER">
+        <method id="COUNTER_GET" name="GET" apigee:displayName="COUNTER (GET)">
+          <apigee:tags>
+            <apigee:tag primary="true">CLOUDSANDRA API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COUNTER/{rowKey}/{cName}"/>
+          <description uriparam="rowKey" text="The name of the row key to associate a counter with"/>
+          <description uriparam="cName" text="The name of the counter"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COUNTER">Returns the current value of the specified counter.</doc>
+        </method>
+      </resource>
+      <resource path="/COUNTER">
+        <method id="COUNTER_POST_INCREMENT" name="POST" apigee:displayName="COUNTER INCREMENT (POST)">
+          <apigee:tags>
+            <apigee:tag primary="true">CLOUDSANDRA API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COUNTER/{rowKey}/{cName}?increment={integer}"/>
+          <description uriparam="rowKey" text="The name of the row key to associate a counter with"/>
+          <description uriparam="cName" text="The name of the counter"/>
+          <description uriparam="integer" text="The value to change the counter"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COUNTER">Increments a counter.</doc>
+        </method>
+      </resource>
+      <resource path="/COUNTER">
+        <method id="COUNTER_POST_DECREMENT" name="POST" apigee:displayName="COUNTER DECREMENT (POST)">
+          <apigee:tags>
+            <apigee:tag primary="true">CLOUDSANDRA API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/COUNTER/{rowKey}/{cName}?decrement={integer}"/>
+          <description uriparam="rowKey" text="The name of the row key to associate a counter with"/>
+          <description uriparam="cName" text="The name of the counter"/>
+          <description uriparam="integer" text="The value to change the counter"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/COUNTER">Decrements a counter.</doc>
+        </method>
+      </resource>
+      <resource path="/CQL">
+        <method id="CQL_GET" name="GET" apigee:displayName="CQL (GET)">
+          <apigee:tags>
+            <apigee:tag primary="true">CLOUDSANDRA API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/CQL/{cfName}?query={query}"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/CQL">CQL query example: SELECT * WHERE KEY = {rowKey} AND {index} = {value}</doc>
+        </method>
+      </resource>
+      <!-- 
+      <resource path="/SMS">
+        <method id="SMS_POST" name="POST" apigee:displayName="SMS (POST)">
+          <apigee:tags>
+            <apigee:tag primary="true">SMS API</apigee:tag>
+          </apigee:tags>
+          <apigee:authentication required="true"/>
+          <apigee:example url="/SMS/{SMSAccessId}"/>
+          <doc title="" apigee:url="https://api.isidorey.net/v0.9/SMS/{SMSAccessId}">Sends and SMS message</doc>
+          <request>
+            <param name="token" type="text" style="query" required="true" default=""/>
+            <description param="token" text="The authentication token related     with your SMS account"/>
+            <param name="from" type="text" style="query" required="true" default=""/>
+            <description param="from" text="The number provided by Isidorey     to send an SMS message from"/>
+            <param name="to" type="text" style="query" required="true" default=""/>
+            <description param="to" text="The number to     send an SMS message to"/>
+            <param name="message" type="text" style="query" required="true" default=""/>
+            <description param="message" text="The message     to send in 160 characters or less"/>
+          </request>
+        </method>
+      </resource>
+      -->
+  </resources>
+</application>
